@@ -1,0 +1,511 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>新建自定义模块</title>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <link rel="stylesheet" type="text/css" href="./static/component/component-min.css" />
+    <link rel="stylesheet" href="./static/_css/style.css">
+    <link rel="stylesheet" href="./static/_css/diy-min.css?1563607903">
+    <link rel="stylesheet" href="./static/colorpicker/colorpicker.css">
+    <style>
+        .colorPicker {display: block;border: 1px solid #eee;}
+        .addLink{
+            position: fixed;
+            top: 15%;
+            left: 25%;
+            width: 800px;
+            height: 600px;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+        .mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            opacity: 0.5;
+        }
+        .addLink dl{
+            display: -webkit-box;
+            -webkit-box-pack: center;
+            -webkit-box-align: start;
+        }
+        .addLink dl dt{
+            -webkit-box-flex: 1; -webkit-flex: 1; flex: 1;
+        }
+        .addLink dl{
+            height: 40px;
+            border-bottom: 1px solid #d0d0d0;
+            padding:0 10px;
+        }
+        .addLink dl dt{
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 40px;
+        }
+        .addLink dl dd{
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 40px;
+            height: 40px;
+            width: 40px;
+            text-align: center;
+            cursor:pointer;
+        }
+        .link_list{
+            padding:18px;
+            height: 450px;
+        }
+        .link_list div{
+            height: 100%;
+            width: 200px;
+            border:1px solid #d0d0d0;
+            display: inline-block;
+            overflow: hidden;
+            overflow-y: auto;
+        }
+        .link_list > div:nth-child(2){
+            margin: 0 25px;
+        }
+        .link_list > div:nth-child(4){
+            margin-left:25px;
+        }
+        .link_list div ul{
+            display: block;
+        }
+        .link_list div ul li{
+            line-height: 35px;
+            text-align: center;
+            font-size: 14px;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .link_list div ul li.on{
+            background-color: #428bca;
+            color: #fff;
+        }
+        .link_btn{
+            text-align: right;
+            padding:15px;
+            border-top:1px solid #d0d0d0;
+        }
+        .link_btn button{
+            margin-left: 15px;
+        }
+
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <div class="inner clearfix">
+        <div class="content-right">
+            <div class="diy clearfix">
+                <div id="diy-phone">
+                    <div class="diy-phone-header">
+                        <i class="diy-phone-receiver"></i>
+                        <div class="diy-phone-title j-pagetitle">自定义模块</div>
+                    </div>
+                    <div class="diy-phone-contain" id="diy-contain">
+                        <div class="nodrag"></div>
+                        <div class="drag"></div>
+                    </div>
+                    <i class="diy-phone-footer"></i>
+                </div>
+                <div id="diy-ctrl">
+                    <div class="diy-ctrl-item" data-origin="pagetitle" style="margin-top:85px;">
+                        <div class="formitems">
+                            <label class="fi-name">自定义模块名称：</label>
+                            <div class="form-controls">
+                                <input type="text" class="input j-pagetitle-selfTitle" value="自定义模块名称">
+                            </div>
+                        </div>
+
+                        <div class="formitems">
+                            <label class="fi-name">页面布局：</label>
+                            <div class="form-controls">
+                                <div class="radio-group">
+                                    <label><input type="radio" name="hasMargin" class="j-page-hasMargin" value="1">有边距</label>
+                                    <label><input type="radio" name="hasMargin" class="j-page-hasMargin" value="0">无边距</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="formitems">
+                            <label class="fi-name">页面标题：</label>
+                            <div class="form-controls">
+                                <input type="text" name="name" class="input j-pagetitle-ipt" value="页面标题">
+                            </div>
+                        </div>
+                        <div class="formitems">
+                            <label class="fi-name">分享标题：</label>
+                            <div class="form-controls">
+                                <input type="text" name="share_title" class="input j-pagetitle-shareTitle" value="分享标题">
+                            </div>
+                        </div>
+                        <div class="formitems">
+                            <label class="fi-name">分享描述：</label>
+                            <div class="form-controls">
+                                <textarea name="share_desc"  class="input j-pagetitle-shareDesc"  cols="30" rows="10">分享描述</textarea>
+                            </div>
+                        </div>
+                        <div class="formitems">
+                            <label class="fi-name">分享图片：</label>
+                            <div class="form-controls pdt5 j-imglistPanel">
+                                <ul class="img-list clearfix">
+                                    <li class="img-list-add j-addimg">+</li>
+                                </ul>
+                                <input type="hidden" name="file_path" id="file_path" class="j-imglist-dataset  j-pagetitle-shareImg">
+                                <span class="fi-help-text">[如若多选，则以最后一张为准]</span>
+                            </div>
+                        </div>
+                        <div class="formitems">
+                            <label class="fi-name">模板封面图：</label>
+                            <div class="form-controls pdt5 album_select_img_list_show_j-addimg2">
+                                <ul class="img-list clearfix">
+                                    <li class="img-list-add j-addimg2">+</li>
+                                </ul>
+                                <input type="hidden" name="file_path" id="file_paths" class="j-imglist-dataset  j-pagetitle-coverImg">
+                                <span class="fi-help-text">[如若多选，则以最后一张为准]</span>
+                            </div>
+                        </div>
+
+                        <div class="formitems">
+                            <label class="fi-name">页面背景色：</label>
+                            <div class="form-controls">
+                                <a href="javascript:;" class="colorPicker" id="j-page-backgroundColor" data-color="#F8F8F8">点击选择</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="diy-actions">
+                <h3>可用模块</h3>
+                <div class="diy-actions-addModules clearfix">
+                    <a href="javascript:;" class="j-page-addModule" data-type="0"><i class="gicon-cog"></i>页面设置</a>
+                    <a href="javascript:;" class="j-diy-addModule" data-type="2"><i class="gicon-plus"></i>标题</a>
+                    <a href="javascript:;" class="j-diy-addModule" data-type="100"><i class="gicon-plus"></i>社区团</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/j-template" id="tpl_diy_conitem">
+    <div class="diy-conitem">
+        <%= html %>
+        <div class="diy-conitem-action">
+            <div class="diy-conitem-action-btns">
+                <a href="javascript:;" class="diy-conitem-btn diy-edit j-edit">编辑</a>
+                <a href="javascript:;" class="diy-conitem-btn diy-del j-del">删除</a>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/j-template" id="tpl_diy_ctrl">
+    <div class="diy-ctrl-item" data-origin="item" style="width: 650px;">
+        <%= html %>
+    </div>
+</script>
+
+
+
+<script type="text/j-template" id="tpl_diy_con_type2">
+    <div class="members_con" style="margin: 0;">
+        <div class="modulePadding con_type2" style="padding-top:<%=content.modulePadding%>px;padding-bottom:<%=content.modulePadding%>px;">
+            <%if(content.layout1_style==1 || typeof content.layout1_style=="undefined"){%>
+            <section class="con_type2_db members_special <%= content.direction %> titlestyle<%=content.style || 0%>" style="background-color:<%= content.bgColor %>"
+            <% if(content.style=="3"){ %>style="border-left-color:<%= content.BackgroundColor %>"<% } %>>
+            <%
+            var titleColor="#FFF";
+            if(content.titleColor){
+            titleColor=content.titleColor;
+            }
+            %>
+            <h2 class="j-title notice-con <%= content.fontSize %>" style="color:<%=content.titleColor%>"><%= content.title %></h2>
+            </section>
+            <% } %>
+            <% if(content.style=="4"){ %>
+            <div class="con_type2_hd <%= content.direction %> titlestyle<%=content.style || 4%>"><%= content.url_name?content.url_name:'更多' %></div>
+            <% } %>
+            <% if(content.style=="5"){ %>
+            <div style="padding:10px;font-size: 14px;background-color: #fff;color: red;">00分00秒</div>
+            <% } %>
+        </div>
+    </div>
+</script>
+
+<script type="text/j-template" id="tpl_diy_ctrl_type2">
+    <div class="formitems">
+        <label class="fi-name">当前组件：</label>
+        <div class="radio-group" style="margin-left: 10px;">
+            <p>标题</p>
+        </div>
+    </div>
+    <div class="formitems">
+        <label class="fi-name">标题：</label>
+        <div class="form-controls">
+            <input type="text" name="title" class="input" value="<%= content.title %>">
+            <span class="fi-help-text"></span>
+        </div>
+    </div>
+    <div class="formitems">
+        <label class="fi-name">显示类型：</label>
+        <div class="form-controls">
+            <div class="radio-group">
+                <label><input type="radio" name="style" value="0" <% if(content.style=="0" ||content.style == undefined){ %>checked<% } %> >样式一</label>
+                <label><input type="radio" name="style" value="1" <% if(content.style=="1"){ %>checked<% } %> >样式二</label>
+                <label><input type="radio" name="style" value="2" <% if(content.style=="2"){ %>checked<% } %> >样式三</label>
+                <label><input type="radio" name="style" value="3" <% if(content.style=="3"){ %>checked<% } %> >样式四</label>
+                <label><input type="radio" name="style" value="4" <% if(content.style=="4"){ %>checked<% } %> >样式五</label>
+                <label><input type="radio" name="style" value="5" <% if(content.style=="5"){ %>checked<% } %> >社区团秒杀</label>
+                <!-- <label><input type="radio" name="style" value="5" <% if(content.style=="5"){ %>checked<% } %> >样式六</label>
+                <label><input type="radio" name="style" value="6" <% if(content.style=="6"){ %>checked<% } %> >样式七</label> -->
+            </div>
+        </div>
+    </div>
+    <% if(content.style == 4){%>
+    <div class="formitems">
+        <label class="fi-name">链接文字自定义：</label>
+        <div class="form-controls">
+            <input type="text" name="url_name" class="input" value="<%= content.url_name %>" style="width:390px">
+            <span class="fi-help-text"></span>
+        </div>
+    </div>
+    <div class="formitems">
+        <label class="fi-name">跳转链接：</label>
+        <div class="form-controls">
+            <input type="text" name="layout" class="input" value="<%= content.layout %>" style="width:390px">
+            <span class="fi-help-text"></span>
+        </div>
+    </div>
+    <%}%>
+    <% if(content.style=="3"){ %>
+    <div class="formitems">
+        <label class="fi-name">边框颜色：</label>
+        <div class="form-controls">
+            <a href="javascript:;" class="colorPicker j-imgNav-cp" data-color="<%= content.BackgroundColor%>" style="background-color:<%= content.BackgroundColor%>">点击选择</a>
+        </div>
+    </div>
+    <% } %>
+    <div class="formitems">
+        <label class="fi-name">字体大小：</label>
+        <div class="form-controls">
+            <div class="radio-group">
+                <label><input type="radio" name="fontSize" value="font16" <% if(content.fontSize=="font16"){ %>checked<% } %> >16px</label>
+                <label><input type="radio" name="fontSize" value="font18" <% if(content.fontSize=="font18"){ %>checked<% } %> >18px</label>
+                <label><input type="radio" name="fontSize" value="font20" <% if(content.fontSize=="font20"){ %>checked<% } %> >20px</label>
+            </div>
+        </div>
+    </div>
+    <div class="formitems">
+        <label class="fi-name">显示方式：</label>
+        <div class="form-controls">
+            <div class="radio-group">
+                <label><input type="radio" name="direction" value="left" <% if(content.direction=="left"){ %>checked<% } %> >居左</label>
+                <label><input type="radio" name="direction" value="center" <% if(content.direction=="center"){ %>checked<% } %> >居中</label>
+                <label><input type="radio" name="direction" value="right" <% if(content.direction=="right"){ %>checked<% } %> >居右</label>
+            </div>
+        </div>
+    </div>
+    <div class="formitems">
+        <label class="fi-name">模块上下边距：</label>
+        <div class="form-controls">
+            <div class="fl diy-slider j-slider"></div>
+            <span class="fl mgl10 mgt5 ftsize14 j-ctrl-showheight"><%=content.modulePadding%>px</span>
+        </div>
+    </div>
+    <% if(content.style == 0){%>
+    <div class="formitems">
+        <label class="fi-name">背景颜色：</label>
+        <div class="form-controls">
+            <div class="colorPicker colpck-bgColor" style="background-color:<%= content.bgColor %>">颜色选择</div>
+            <span class="fi-help-text"></span>
+        </div>
+    </div>
+    <% } %>
+    <!-- 修改文字颜色 -->
+    <div class="formitems">
+        <label class="fi-name">文字颜色：</label>
+        <div class="form-controls">
+            <%
+            var titleColor="#FFF";
+
+            if(content.titleColor){
+            titleColor=content.titleColor;
+            }
+            %>
+            <a href="javascript:;" class="colorPicker j-textColor-cp" data-color="<%=titleColor%>" style="background-color:<%=titleColor%>">点击选择</a>
+        </div>
+    </div>
+</script>
+
+<script type="text/j-template" id="tpl_diy_ctrl_type100">
+    <div class="formitems">
+        <label class="fi-name">当前组件：</label>
+        <div class="radio-group" style="margin-left: 10px;">
+            <p>社区团商品</p>
+        </div>
+    </div>
+    <div class="formitems">
+        <label class="fi-name">样式：</label>
+        <div class="form-controls">
+            <div class="radio-group">
+                <label><input type="radio" name="goodstyle" value="1" <% if(content.goodstyle==1){ %>checked<% } %> >横排两列</label>
+                <label><input type="radio" name="goodstyle" value="2" <% if(content.goodstyle==2){ %>checked<% } %> >横排单列</label>
+            </div>
+        </div>
+    </div>
+    <div class="formitems">
+        <label class="fi-name">数据源：</label>
+        <div class="form-controls">
+            <div class="radio-group">
+                <label><input type="radio" name="layoutstyles" value="2" <% if(content.layoutstyles==2){ %>checked<% } %> >平台数据</label>            </div>
+        </div>
+    </div>
+    <div class="formitems">
+        <label class="fi-name">添加：</label>
+        <div class="form-controls">
+            <div class="radio-group">
+                <label><input type="radio" name="goodsize" value="1" <% if(content.goodsize==1){ %>checked<% } %> >逐一添加</label>
+                <% if(content.layoutstyles==2){ %>
+                <label><input type="radio" name="goodsize" value="3" <% if(content.goodsize==3){ %>checked<% } %> >添加分类</label>
+                <label><input type="radio" name="goodsize" value="2" <% if(content.goodsize==2){ %>checked<% } %> >添加推荐</label>
+                <label><input type="radio" name="goodsize" value="7" <% if(content.goodsize==7){ %>checked<% } %> >限时优惠</label>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <% if(content.goodsize==1){ %>
+    <div class="formitems">
+        <label class="fi-name">选择商品：</label>
+        <div class="form-controls pdt5">
+            <ul class="img-list clearfix">
+                <% if (content.goodslist){ %>
+                <% _.each(content.goodslist,function(goods){ %>
+                <li data-item="<%= goods.item_id %>">
+                    <a href="javascript:void(0);" target="_blank">
+                        <span class="img-move img-move-left"></span>
+                        <span class="img-move img-move-right"></span>
+                        <span class="img-list-btndel j-delgoods"><i class="gicon-trash white"></i></span>
+                        <span class="img-list-overlay"></span>
+                        <img src="<%= goods.thumb %>">
+                    </a>
+                </li>
+                <% }) %>
+                <% } %>
+                <li class="img-list-add j-addgoods"></li>
+            </ul>
+            <input type="hidden" value="" class="j-verify"><span class="fi-help-text"></span>
+        </div>
+    </div>
+    <% } %>
+    <% if(content.goodsize== 2 || content.goodsize== 4 || content.goodsize==5 || content.goodsize==6 || content.goodsize==7){ %>
+    <div class="formitems">
+        <label class="fi-name">显示商品个数：</label>
+        <div class="form-controls">
+            <div class="radio-group">
+                <label><input type="number" name="num" value="<%= content.num%>" class="input j-pagetitle-ipt" style="border:1px solid #d0d0d0;">个</label>
+            </div>
+            <span class="fi-help-text"></span>
+        </div>
+    </div>
+    <% } %>
+    <% if(content.goodsize==3){ %>
+    <div class="formitems">
+        <label class="fi-name">添加分类：</label>
+        <div class="form-controls">
+            <ul class="labelList j-meGoodsClassLabelList  clearfix" style="">  <%=content.used_ids_desc %>   </ul>
+            <a href="javascript:void(0)" class="btn btn-primary j-select-category" data-type="tb" ><i class="gicon-edit white"></i>编辑商品分类</a>
+        </div>
+    </div>
+    <div class="formitems">
+        <label class="fi-name">显示商品个数：</label>
+        <div class="form-controls">
+            <div class="radio-group">
+                <label><input type="number" name="num" value="<%= content.num%>" class="input j-pagetitle-ipt" style="border:1px solid #d0d0d0;">个</label>
+            </div>
+            <span class="fi-help-text"></span>
+        </div>
+    </div>
+    <% } %>
+    <div class="formitems">
+        <label class="fi-name">模块上下边距：</label>
+        <div class="form-controls">
+            <div class="fl diy-slider j-slider"></div>
+            <span class="fl mgl10 mgt5 ftsize14 j-ctrl-showheight"><%=content.modulePadding%>px</span>
+        </div>
+    </div>
+</script>
+
+<script type="text/j-template" id="tpl_diy_con_type100">
+    <div class="members_con">
+        <div class="modulePadding" style="padding-top:<%=content.modulePadding%>px;padding-bottom:<%=content.modulePadding%>px;">
+            <% if(content.goodstyle==1){ %>
+            <section class="members_goodspic">
+                <ul>
+                    <% if (content.goodslist.length){ %>
+                    <% _.each(content.goodslist,function(goods,index){ %>
+                    <li class="b_mingoods">
+                        <div class="b_mingoods_wrapper">
+                            <a href="javascript:void(0);"><img src="<%= goods.cover_thumb %>" width="100%"></a>
+                            <p class="goods-title"><%= goods.title %></p>
+                            <p>
+                                <span class="goods-pirce fl"><i class="smallsize">&yen;</i><%= goods.money%></span>
+                            </p>
+                        </div>
+                    </li>
+                    <% }) %>
+                    <% } %>
+                </ul>
+            </section>
+            <% } else if(content.goodstyle==2){ %>
+            <section class="members_goodspic layoutstyles2" style="margin-top:<%=content.modulePadding%>px;margin-bottom:<%=content.modulePadding%>px;">
+                <ul>
+                    <% if (content.goodslist.length){ %>
+                    <% _.each(content.goodslist,function(goods){ %>
+                    <li class="lists_goods">
+                        <a class="goodsimg fl" href="javascript:void(0);"><img src="<%= goods.cover_thumb %>" width="100%"  style="width: 120px;height: 85px;"> </a>
+                        <section class="members_goodsimg_name rename clearfix">
+                            <a href="javascript:void(0);" class="multiLine" style="height: 18px;margin-bottom: 5px;margin-top: 0;"><%= goods.title %></a>
+                            <span class="original_price">
+                                <p style="float: left;background-color: #FFF2E9;color: #FF5B38;border-radius: 3px;padding: 2px 5px;"><%= goods.show_time %></p>
+                                <em style="float: right;text-align: right;line-height: 15px;">地址<br>0.0km</em>
+                            </span>
+                            <span>
+                                <%= goods.money%>
+                                <s style="font-size: 12px;">&yen;<%= goods.originalPrice%></s>
+                            </span>
+                            <!--<em class="selled-num fr">已售：<strong>xxx</strong></em>-->
+                        </section>
+                    </li>
+                    <% }) %>
+                    <% }%>
+                </ul>
+            </section>
+            <% } %>
+        </div>
+    </div>
+</script>
+<!-- end tpl_albums_imgs -->
+
+<script src="./static/jquery191/jquery.min.js"></script>
+<script src="./static/layer2.4/layer.js"></script>
+<script src="./static/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+<script src="./static/component/component-min.js"></script>
+<script src="./static/colorpicker/colorpicker.js"></script>
+
+<script src="./static/_js/add_module.js"></script>
+<script src="./static/_js/diy.js"></script>
+
+
+</body>
+
+</html>
