@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>ERP管理后台</title>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <h3><a href="https://study.163.com/course/courseMain.htm?courseId=1004260007">在线学习vue-route。快捷，有效</a></h3><br>
+            <h3><a href="https://my.oschina.net/x1z/blog/1527901">phpstorm支持vue</a></h3><br /><br />
+
+            <router-link to="/">首页</router-link><br>
+            <router-link to="/about">关于</router-link><br>
+            <router-link to="/param/11/22">传参方式一:用冒号</router-link><br>
+            <router-link to="/param?age=11&number=22">传参方式二:用问号</router-link><br>
+            <router-link to="/children/son">子路由</router-link><br>
+            <btton type="button" @click="surf">手动切换路由</btton><br>
+            <h4>如何跳转到各个页面。感觉上面的更像是锚点跳转</h4>
+        </div>
+        <div>
+            <router-view></router-view>
+        </div>
+    </div>
+    <script src="https://cdn.staticfile.org/vue/2.4.3/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-router/3.0.0/vue-router.min.js"></script>
+    <script src="./app.js"></script>
+</body>
+</html>
